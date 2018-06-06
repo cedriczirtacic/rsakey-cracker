@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 
 #include <openssl/ssl.h>
 #include <openssl/err.h>
@@ -10,23 +11,37 @@
 
 #define SIZE 8192
 
+/* global variables */
+char pwd[SIZE];
+char *key_path;
+
+static void siginfo( __attribute__((unused))int s) {
+    printf("current passphrase: \"%s\" key: %s\n", pwd, key_path);
+}
+
 int main (int argc, char *argv[])
 {
 	BIO *mem;
 	BIO *file;
 	EVP_PKEY *pkey;
+    char key[SIZE];
 
 	FILE *fp;
 	char *ptr;
-	char pwd[SIZE];
-	char key[SIZE];
-
 	if (argc < 2) {
 		fprintf(stderr, "Usage:\n\t%s <rsa key .pem>\n\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
-	fp = fopen(argv[1], "r");
+    key_path = argv[1];
+	fp = fopen(key_path, "r");
+    if (fp == NULL) {
+        perror("fopen");
+        return EXIT_FAILURE;
+    }
+
+    /* catch INFO signal and show current cracking information */
+    signal(SIGINFO, siginfo);
 
 	memset(key, 0x00, SIZE);
 
@@ -47,7 +62,6 @@ int main (int argc, char *argv[])
 
 		BIO_reset(mem);
 		pkey = PEM_read_bio_PrivateKey(mem, NULL, NULL, (char *)pwd);
-
 		if (pkey) {
 			printf("\nPassphrase is: %s\n", pwd);
 			goto end;
