@@ -25,6 +25,7 @@ int main (int argc, char *argv[])
 	BIO *file;
 	EVP_PKEY *pkey;
     char key[SIZE];
+    short int ret = EXIT_FAILURE;
 
 	FILE *fp;
 	char *ptr;
@@ -64,6 +65,7 @@ int main (int argc, char *argv[])
 		pkey = PEM_read_bio_PrivateKey(mem, NULL, NULL, (char *)pwd);
 		if (pkey) {
 			printf("\nPassphrase is: %s\n", pwd);
+            ret = EXIT_SUCCESS;
 			goto end;
 		}
 	}
@@ -73,6 +75,6 @@ end:
 	if (mem)
 		BIO_free(mem);
 
-	return EXIT_SUCCESS;
+	return ret;
 }
 
