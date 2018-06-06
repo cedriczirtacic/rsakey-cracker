@@ -18,7 +18,7 @@ $ john -i --stdout | rsakey-cracker ./private-key.pem
 
 ## Signals:
 ```bash
-$ ./rsakey-cracker ../key.rsa <~ wordlists/rockyou.txt &
+$ ./rsakey-cracker ../key.rsa <wordlists/rockyou.txt &
 [1] 43014
 $ kill -INFO 43014
 current passphrase: "porn" key: ../key.rsa
