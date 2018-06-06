@@ -1,11 +1,26 @@
-Overview:
+# rsakey-cracker
+Credits to: https://github.com/quarantin/rsakey-cracker
 
-	Tool to brute-force passphrase of RSA private keys in PEM format.
+## Overview:
+Tool to brute-force passphrase of RSA private keys in PEM format.
 
-Example:
+## Example:
 
-	cat dict.txt | rsakey-cracker ./private-key.pem
+```bash
+$ cat dict.txt | rsakey-cracker ./private-key.pem
+```
 
-	OR
+OR
 
-	john -i --stdout | rsakey-cracker ./private-key.pem
+```bash
+$ john -i --stdout | rsakey-cracker ./private-key.pem
+```
+
+## Signals:
+```bash
+$ ./rsakey-cracker ../key.rsa <~ wordlists/rockyou.txt &
+[1] 43014
+$ kill -INFO 43014
+current passphrase: "porn" key: ../key.rsa
+```
+
