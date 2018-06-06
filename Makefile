@@ -1,11 +1,12 @@
-
 TARGET=rsakey-cracker
-
 SOURCE=$(TARGET).c
 
-CFLAGS=-Wall -Wextra
-
-LIBS=-lssl -lcrypto
+ifeq ($(shell uname),Darwin)
+CFLAGS=-I/usr/local/opt/openssl/include
+LIBS=-L/usr/local/opt/openssl/lib
+endif
+CFLAGS+= -Wall -Wextra
+LIBS+= -lssl -lcrypto
 
 all:
 	$(CC) $(CFLAGS) $(SOURCE) $(LIBS) -o $(TARGET)
