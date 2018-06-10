@@ -6,7 +6,7 @@ CFLAGS=-I/usr/local/opt/openssl/include
 LIBS=-L/usr/local/opt/openssl/lib
 endif
 CFLAGS+= -Wall -Wextra
-LIBS+= -lssl -lcrypto
+LIBS+= -lssl -lcrypto -lpthread
 
 all:
 	$(CC) $(CFLAGS) $(SOURCE) $(LIBS) -o $(TARGET)
